@@ -16,10 +16,6 @@
 
 
 
-`main.cpp`
-``` c++
-char name [50]; 
-```
 
 # Features:
 - Dynamic Gameplay: The ball starts with a slow horizontal movement to allow the player to hit it, then gains speed after the first hit.
