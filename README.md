@@ -6,7 +6,8 @@
   - Easy [Ez Pz.]
   - Medium [For Casuals]
   - Hard [Impossible To Defeat] <- Currently The Game Is Set By Default To Hard Mode.
-- 
+
+- Will Compile It With **WebAssembly (Wasm)**, So That Players Can Play It Online.
   
 
 
