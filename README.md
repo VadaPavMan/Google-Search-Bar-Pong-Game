@@ -8,6 +8,7 @@
 - - Hard [Impossible To Defeat] <- Currently The Game Is Set By Default To Hard Mode.
 
 
+# Game Preview:
 ![imgC](assests/image.png)
 
 
