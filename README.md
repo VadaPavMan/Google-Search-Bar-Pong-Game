@@ -3,9 +3,9 @@
 - This project is a creative twist on the classic Pong game, reimagined with Google-themed visuals! Play as two search bars—one black, one white—and compete to score points by bouncing a Google-themed ball past the opponent’s paddle.
 
 - Future Updates: Will Add The **Choose Difficulty** And Minor Bug Fixes.
-. Easy [Ez Pz.]
-. Medium [For Casuals]
-. Hard [Impossible To Defeat] <- Currently The Game Is Set By Default To Hard Mode.
+- - Easy [Ez Pz.]
+- - Medium [For Casuals]
+- - Hard [Impossible To Defeat] <- Currently The Game Is Set By Default To Hard Mode.
 
 
 ![imgC](assests/image.png)
