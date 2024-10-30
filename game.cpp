@@ -131,7 +131,7 @@ int main(void)
     Texture2D finalwinblack = LoadTexture("assests/blackpage.png");
 
     Vector2 position = {(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
-    Vector2 velocity = {5.0f, 4.0f};
+    Vector2 velocity = {25.0f, 4.0f};
     float ballradius = ball.width / 2.0f;
 
     // Audio
