@@ -2,10 +2,17 @@
 
 - This project is a creative twist on the classic Pong game, reimagined with Google-themed visuals! Play as two search bars—one black, one white—and compete to score points by bouncing a Google-themed ball past the opponent’s paddle.
 
-- Future Updates: Will Add The **Choose Difficulty** And Minor Bug Fixes.
-  - Easy [Ez Pz.]
-  - Medium [For Casuals]
-  - Hard [Impossible To Defeat] <- Currently The Game Is Set By Default To Hard Mode.
+**New Update:** setupscript and mysetup
+- setupscript.iss , inno setup script file for the game and mysetup.exe an installer for game. 
+- **Note:** The Windows Defender Can Give You A Pop up About the Author Publisher. As it is an open source and I'm the Author And Publisher Not Any Official Company.
+
+# Changelog
+
+**Final release:**
+- Fixed Some bugs.
+- Created A Mainmenu.
+- Created A 4 Diffrent Mode. Easy, Medium, Hard, 2 Player.
+- Added A Background Music.
 
 - Will Compile It With **WebAssembly (Wasm)**, So That Players Can Play It Online.
   
