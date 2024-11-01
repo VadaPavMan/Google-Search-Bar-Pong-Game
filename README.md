@@ -2,8 +2,8 @@
 
 - This project is a creative twist on the classic Pong game, reimagined with Google-themed visuals! Play as two search bars—one black, one white—and compete to score points by bouncing a Google-themed ball past the opponent’s paddle.
 
-**New Update:** setupscript and mysetup
-- setupscript.iss , inno setup script file for the game and mysetup.exe an installer for game. 
+**New Update:** mysetup
+- mysetup.exe an installer for game. 
 - **Note:** The Windows Defender Can Give You A Pop up About the Author Publisher. As it is an open source and I'm the Author And Publisher Not Any Official Company.
 
 # Changelog
