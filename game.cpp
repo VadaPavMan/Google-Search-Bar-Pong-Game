@@ -26,6 +26,7 @@
 #include <conio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <cstdlib>
 #include <time.h>
 #include <iostream>
 
@@ -35,6 +36,7 @@ const int screenWidth = 1600;
 const int screenHeight = 900;
 float lastBackgroundSwitch = 0.0f;
 bool showFirstBackground = true;
+float reactionThresholdX = 400.0f;
 
 void ballmovement(Vector2 *position, Vector2 velocity, int playerlose)
 {
@@ -50,12 +52,111 @@ void ballmovement(Vector2 *position, Vector2 velocity, int playerlose)
     }
 }
 
-void resetball(Vector2 *position, Vector2 *velocity)
+void resetballEasy(Vector2 *position, Vector2 *velocity)
+{
+    Vector2 pos = {(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
+    Vector2 vel = {10.0f, 4.0f};
+    *position = pos;
+    *velocity = vel;
+}
+
+void resetballMedium(Vector2 *position, Vector2 *velocity)
+{
+    Vector2 pos = {(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
+    Vector2 vel = {17.0f, 4.0f};
+    *position = pos;
+    *velocity = vel;
+}
+
+void resetballHard(Vector2 *position, Vector2 *velocity)
 {
     Vector2 pos = {(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
     Vector2 vel = {25.0f, 4.0f};
     *position = pos;
     *velocity = vel;
+}
+
+void resetballPlayer(Vector2 *position, Vector2 *velocity)
+{
+    Vector2 pos = {(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
+    Vector2 vel = {22.0f, 4.0f};
+    *position = pos;
+    *velocity = vel;
+}
+
+void Rightbar(Vector2 *position, int diff, float *y)
+{
+    float easyspeed = 3.0f;
+    float mediumspeed = 7.0f;
+    float hardspeed = 9.0f;
+
+ if (position->x >= reactionThresholdX)
+        {
+            if (*y + 360.0 / 2.0 > position->y)
+            {
+                if (diff == 1)
+                {
+                    *y -= easyspeed;
+                }
+                if (diff == 2)
+                {
+                    *y -= mediumspeed;
+                }
+                if (diff == 3)
+                {
+                    *y -= hardspeed;
+                }
+            }
+
+            if (*y <= 0)
+            {
+                *y = 0;
+            }
+
+            if (*y + 360.0 / 2.0 <= position->y)
+            {
+                if (diff == 1)
+                {
+                    *y += easyspeed;
+                }
+                if (diff == 2)
+                {
+                    *y += mediumspeed;
+                }
+                if (diff == 3)
+                {
+                    *y += hardspeed;
+                }
+            }
+
+            if (*y + 360 >= GetScreenHeight())
+            {
+                *y = GetScreenHeight() - 360;
+            }
+        }   
+}
+
+void RightbarPlayer(float *y, float speed)
+{
+    if (IsKeyDown(KEY_UP))
+        {
+            *y -= speed;
+        }
+
+        if (*y <= 0)
+        {
+            *y = 0;
+        }
+
+        if (IsKeyDown(KEY_DOWN))
+        {
+            *y += speed;
+        }
+
+        if (*y + 360 >= GetScreenHeight())
+        {
+            *y = GetScreenHeight() - 360;
+        }
 }
 
 class bars
@@ -68,8 +169,18 @@ public:
 
 bars b1, b2;
 
+int mainSecond(void);
+
 int main(void)
 {
+    // Menu Program
+    int diff= mainSecond();
+    if(diff == false)
+    {
+        CloseWindow();
+        return 0;
+    }
+
     // Initializations
     int playerwin = 0;
     int player1 = 0;
@@ -86,9 +197,9 @@ int main(void)
     char musicpause[100] = "Press M To Pause And N To Play The Music.";
 
     float rotateAngle = 0.0f;
-    float reactionThresholdX = 400.0f;
     float speed = 7.0f;
 
+    // Class Objects Declaration
     b1.bar1speed = 7.0f;
     b1.height = 360.0f;
     b1.width = 82.0f;
@@ -131,7 +242,22 @@ int main(void)
     Texture2D finalwinblack = LoadTexture("assests/blackpage.png");
 
     Vector2 position = {(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
-    Vector2 velocity = {25.0f, 4.0f};
+    Vector2 velocity;
+    switch (diff)
+    {
+    case 1:
+        velocity = {10.0f, 4.0f};
+        break;
+    case 2:
+        velocity = {17.0f, 4.0f};
+        break;
+    case 3:
+        velocity = {25.0f, 4.0f};
+        break;
+    case 4:
+        velocity = {22.0f, 4.0f};
+        break;
+    }
     float ballradius = ball.width / 2.0f;
 
     // Audio
@@ -219,34 +345,17 @@ int main(void)
         }
 
         // Right Bar Movement
-        if (position.x >= reactionThresholdX)
+
+        if(diff == 1 || diff == 2 || diff == 3)
         {
-            if (b2.y + 360 / 2 > position.y)
-            {
-                b2.y -= speed;
-            }
-
-            if (b2.y <= 0)
-            {
-                b2.y = 0;
-            }
-
-            if (b2.y + 360 / 2 <= position.y)
-            {
-                b2.y += speed;
-            }
-
-            if (b2.y + 360 >= GetScreenHeight())
-            {
-                b2.y = GetScreenHeight() - 360;
-            }
+            Rightbar(&position, diff, &b2.y);
+        }
+        else if(diff == 4)
+        {
+            RightbarPlayer(&b2.y, speed); 
         }
 
         // Ball Collision.
-        if (position.x - (float)ball.width / 2.0f <= 0 || position.x + (float)ball.width / 2.0f >= 1660)
-        {
-            velocity.x *= -1.0f;
-        }
 
         if (position.y - (float)ball.height / 2.0f <= 0 || position.y + (float)ball.height / 2.0f >= 930)
         {
@@ -260,13 +369,44 @@ int main(void)
             {
                 playerwin = 1;
                 player2 += 1;
-                resetball(&position, &velocity);
+                if (diff == 1)
+                {
+                    resetballEasy(&position, &velocity);
+                }
+                if (diff == 2)
+                {
+                    resetballMedium(&position, &velocity);
+                }
+                if (diff == 3)
+                {
+                    resetballHard(&position, &velocity);
+                }
+                if(diff == 4)
+                {
+                    resetballPlayer(&position, &velocity);
+                }
+
             }
             else if (position.x + (float)ball.width / 2.0f >= 1630)
             {
                 playerwin = 0;
                 player1 += 1;
-                resetball(&position, &velocity);
+                if (diff == 1)
+                {
+                    resetballEasy(&position, &velocity);
+                }
+                if (diff == 2)
+                {
+                    resetballMedium(&position, &velocity);
+                }
+                if (diff == 3)
+                {
+                    resetballHard(&position, &velocity);
+                }
+                if(diff == 4)
+                {
+                    resetballPlayer(&position, &velocity);
+                }
             }
         }
 
@@ -301,12 +441,14 @@ int main(void)
                     DrawTexture(finalwinwhite, 0, 0, WHITE);
                     DrawText(whitewin, 530, 260, 50, BLACK);
                     DrawText(gameex, 530, 700, 30, BLACK);
+                    DrawText(musicpause, 1010, 850, 20, BLACK);
                 }
                 else
                 {
                     DrawTexture(finalwinblack, 0, 0, WHITE);
                     DrawText(whitewin, 530, 260, 50, WHITE);
                     DrawText(gameex, 530, 700, 30, WHITE);
+                    DrawText(musicpause, 1010, 850, 20, WHITE);
                 }
             }
             else if (win1 == 0)
@@ -317,12 +459,14 @@ int main(void)
                     DrawTexture(finalwinwhite, 0, 0, WHITE);
                     DrawText(blackwin, 530, 260, 50, BLACK);
                     DrawText(gameex, 530, 700, 30, BLACK);
+                    DrawText(musicpause, 1010, 850, 20, BLACK);
                 }
                 else
                 {
                     DrawTexture(finalwinblack, 0, 0, WHITE);
                     DrawText(blackwin, 530, 260, 50, WHITE);
                     DrawText(gameex, 530, 700, 30, WHITE);
+                    DrawText(musicpause, 1010, 850, 20, WHITE);
                 }
             }
 
@@ -330,7 +474,8 @@ int main(void)
             if (IsKeyDown(KEY_ONE) || IsKeyDown(KEY_KP_1) || IsKeyDown(KEY_ENTER))
             {
                 CloseWindow();
-                main();
+                system("game.exe");
+                
             }
             if (IsKeyDown(KEY_ZERO) || IsKeyDown(KEY_KP_0) || IsKeyDown(KEY_ESCAPE))
             {
